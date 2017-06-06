@@ -1,0 +1,17 @@
+{
+  "name": "http-digest",
+  "description": "Digest authentication for HTTP communication.",
+  "author": {
+    "name": "Tom De Caluwé",
+    "email": "decaluwe.t@gmail.com"
+  },
+  "main": "middleware.js",
+  "engines": {
+    "node": ">=4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdecaluwe/http-digest.git"
+  },
+  "dependencies": {}
+}
