@@ -3,7 +3,7 @@
 var Authenticator = require('./authenticator.js');
 var ReplayDetector = require('./replaydetector.js');
 
-var create = function (options, callback) {
+module.exports.create = function (options, callback) {
   options = options || {};
 
   var detector = new ReplayDetector(options.timeout);
@@ -13,28 +13,20 @@ var create = function (options, callback) {
 };
 
 module.exports.connect = function (options, callback) {
-  var strategy = create(options, callback);
+  var strategy = module.exports.create(options, callback);
 
   return function (req, res, next) {
-    var local = Object.create(strategy);
-
-    local.success = function (user) {
+    var listener = strategy.listener(options, function () {
+      // Call next without arguments.
       next();
-    };
+    });
 
-    local.fail = function (header) {
-      res.writeHead(401, {
-        'WWW-Authenticate': header
-      });
-      res.end('Unauthorized');
-    };
-
-    local.authenticate(req, options);
-  };
+    listener(req, res);
+  }
 };
 
 module.exports.passport = function (options, callback) {
-  var strategy = create(options, callback);
+  var strategy = module.exports.create(options, callback);
 
   strategy.name = 'digest';
 

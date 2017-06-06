@@ -105,4 +105,25 @@ Authenticator.prototype.authenticate = function (req, options) {
   }
 };
 
+Authenticator.prototype.listener = function (options, callback) {
+  var that = this;
+
+  return function (req, res) {
+    var local = Object.create(that);
+
+    local.success = function (user) {
+      callback(req, res);
+    };
+
+    local.fail = function (header) {
+      res.writeHead(401, {
+        'WWW-Authenticate': header
+      });
+      res.end('Unauthorized');
+    };
+
+    local.authenticate(req, options);
+  };
+};
+
 module.exports = Authenticator;
