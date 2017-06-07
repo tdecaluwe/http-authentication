@@ -1,5 +1,6 @@
 'use strict'
 
+var Basic = require('./basic.js');
 var Digest = require('./digest.js');
 var ReplayDetector = require('./replaydetector.js');
 
@@ -13,7 +14,11 @@ module.exports = function (options, callback) {
 
   options = options || {};
 
-  config.timeout = options.timeout || 0;
+  if (options.method === 'basic') {
+    return new Basic(callback);
+  } else {
+    config.timeout = options.timeout || 0;
 
-  return new Digest(new ReplayDetector(options.timeout), callback);
+    return new Digest(new ReplayDetector(config.timeout), callback);
+  }
 };
