@@ -1,22 +1,18 @@
-var HTTPDigest = require('http-digest');
-
 var express = require('express');
+var authentication = require('http-authentication');
+
 var app = express();
 
 var users = {
   'John': { password: 'password' }
 };
 
-app.use(HTTPDigest.connect({}, function (username, done) {
-  if (users[username]) {
-    done(null, users[username].password);
-  } else {
-    done(new Error('User does not exist.'));
-  }
-}));
+app.use(authentication(function (username, done) {
+  done(null, users[username] && users[username].password);
+}).connect());
 
 app.get('/', function (req, res) {
-  res.end('Successfully authenticated!');
+  res.end('Successfully authenticated to express!');
 });
 
 app.listen(3000);

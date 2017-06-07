@@ -4,7 +4,7 @@ Digest authentication for HTTP communication.
 
 ```javascript
 var express = require('express');
-var digest = require('http-digest');
+var authentication = require('http-authentication');
 
 var app = express();
 
@@ -12,12 +12,8 @@ var users = {
   'John': { password: 'password' }
 };
 
-app.use(digest.connect({}, function (username, done) {
-  if (users[username]) {
-    done(null, users[username].password);
-  } else {
-    done(new Error('User does not exist.'));
-  }
+app.use(digest(function (username, done) {
+  done(null, users[username] && users[username].password);
 }));
 
 app.get('/', function (req, res) {
