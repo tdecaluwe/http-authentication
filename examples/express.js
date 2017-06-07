@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 
 var users = {
-  'John': { password: 'passsword' }
+  'John': { password: 'password' }
 };
 
 app.use(HTTPDigest.connect({}, function (username, done) {
