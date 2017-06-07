@@ -30,7 +30,9 @@ The module provides an authenticator object creation function which can be
 called as follows:
 
 ```javascript
-var authentication = require('http-athentication')([options,] callback);
+var auth = require('http-authentication');
+
+var authenticator = auth([options,] callback);
 ```
 
 The `options` argument is optional and can be used to configure the
@@ -57,9 +59,18 @@ Two alternative constructors are provided for the basic and digest method
 respectively. They can be called as follows:
 
 ```javascript
-var authentication = require('http-athentication').basic(callback);
-var authentication = require('http-athentication').digest([options,] callback);
+var auth = require('http-authentication');
+
+var authenticator = auth.basic(callback);
+var authenticator = auth.digest([options,] callback);
 ```
+
+## Replay protection
+
+Protection against replay attacks is provided by the `ReplayDetector` class and
+is included with each middleware. This class also handles expiration of server
+provided nonces. It only keeps track of non-expired nonces, expired nonces are
+automatically discarded.
 
 ## Middleware
 
@@ -73,18 +84,22 @@ Option   | Type     | Possible values
 ### `http.Server`
 
 ```javascript
-var authenticator = require('http-authentication')(options, callback);
+var auth = require('http-authentication');
+
+var authenticator = auth(options, callback);
 
 // Authenticate another listener.
-var authenticatedListener = authenticator.listener([options,] listener);
+var privateListener = authenticator.listener([options,] listener);
 
-http.createServer(authenticatedListener);
+http.createServer(privateListener);
 ```
 
 ### Express
 
 ```javascript
-var authenticator = require('http-authentication')(options, callback);
+var auth = require('http-authentication');
+
+var authenticator = auth(options, callback);
 
 // Obtain a connect middleware.
 var connect = authenticator.connect([options]);
@@ -95,16 +110,13 @@ app.use(connect);
 ### Passport
 
 ```javascript
-var authenticator = require('http-authentication')(options, callback);
+var auth = require('http-authentication');
 
-// Obtain a passport strategy. Options can be passed to passport itself.
+var authenticator = auth(options, callback);
+
+// Obtain a passport strategy. Options can be passed to
+// passport itself.
 var strategy = authenticator.strategy();
 
 passport.use(strategy);
 ```
-
-## Replay protection
-
-Protection against replay attacks is provided by the `ReplayDetector` class and
-is included with each middleware. This class also handles expiration of server
-provided nonces. It only keeps track of non-expired nonces.
