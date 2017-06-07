@@ -12,13 +12,21 @@ module.exports = function (options, callback) {
     options = undefined;
   }
 
+  if (options.method === 'basic') {
+    return module.exports.basic(callback);
+  } else {
+    return module.exports.digest(options, callback);
+  }
+};
+
+module.exports.basic = function (callback) {
+  return new Basic(callback);
+};
+
+module.exports.digest = function (options, callback) {
   options = options || {};
 
-  if (options.method === 'basic') {
-    return new Basic(callback);
-  } else {
-    config.timeout = options.timeout || 0;
+  config.timeout = options.timeout || 0;
 
-    return new Digest(new ReplayDetector(config.timeout), callback);
-  }
+  return new Digest(new ReplayDetector(config.timeout), callback);
 };

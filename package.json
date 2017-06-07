@@ -1,7 +1,8 @@
 {
-  "name": "http-digest",
+  "name": "http-authentication",
   "description": "Digest authentication for HTTP communication.",
-  "version": "1.1.1",
+  "keywords": ["http", "authentication", "basic", "digest"],
+  "version": "1.1.2",
   "license": "Apache-2.0",
   "author": {
     "name": "Tom De Caluwé",
@@ -9,11 +10,11 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=4.0"
+    "node": ">=0.10"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tdecaluwe/http-digest.git"
+    "url": "https://github.com/tdecaluwe/http-authentication.git"
   },
   "dependencies": {}
 }
