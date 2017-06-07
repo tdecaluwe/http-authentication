@@ -1,6 +1,8 @@
 {
   "name": "http-digest",
   "description": "Digest authentication for HTTP communication.",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
   "author": {
     "name": "Tom De Caluwé",
     "email": "decaluwe.t@gmail.com"
