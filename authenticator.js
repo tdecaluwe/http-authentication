@@ -1,9 +1,25 @@
 'use strict'
 
+/**
+ * Abstract base class implementing the common http authentication logic.
+ *
+ * @constructs Authenticator
+ * @param {Function} identify - A function performing the password lookup.
+ */
 var Authenticator = function (identify) {
   this.identify = identify;
 };
 
+/**
+ * Authenticate a request.
+ *
+ * @description This function expects additional `success` and `fail` callbacks
+ * to be defined on the `this` object. It will call the first one in case of a
+ * succesful authentication, otherwise the second one will be called.
+ *
+ * @param {http.IncomingMessage} req - The request to be authenticated.
+ * @param {Object} options - An object defining authentication options.
+ */
 Authenticator.prototype.authenticate = function (req, options) {
   var that = this;
   var fields;
@@ -37,6 +53,14 @@ Authenticator.prototype.authenticate = function (req, options) {
   }
 };
 
+/**
+ * Construct a function that can be used as a `http.Server` listener.
+ *
+ * @param {Object} options - An object defining authentication options.
+ * @param {Function} callback - An optional callback to be called after a
+ * succesful authentication.
+ * @returns {Function} A function accepting a request/response pair.
+ */
 Authenticator.prototype.listener = function (options, callback) {
   var that = this;
 
@@ -65,6 +89,12 @@ Authenticator.prototype.listener = function (options, callback) {
   };
 };
 
+/**
+ * Construct a connect middleware.
+ *
+ * @param {Object} options - An object defining authentication options.
+ * @returns {Function} A connect middleware callback.
+ */
 Authenticator.prototype.connect = function (options) {
   var that = this;
 

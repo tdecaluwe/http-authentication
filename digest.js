@@ -4,6 +4,13 @@ var crypto = require('crypto');
 
 var Authenticator = require('./authenticator.js');
 
+/**
+ * A class implementing http digest authentication.
+ *
+ * @constructs Digest
+ * @param {ReplayDetector} detector - A replay detector registering hashes.
+ * @param {Function} identify - A function performing the password lookup.
+ */
 var Digest = function (detector, identify) {
   Authenticator.call(this, identify);
 
@@ -72,6 +79,11 @@ Digest.prototype.header = function (realm) {
   return result;
 };
 
+/**
+ * Request an authentication strategy for the passport module.
+ *
+ * @returns {passport.Strategy} A passport strategy for digest authentication.
+ */
 Digest.prototype.passport = function () {
   this.name = 'digest';
 

@@ -4,6 +4,12 @@ var crypto = require('crypto');
 
 var Authenticator = require('./authenticator.js');
 
+/**
+ * A class implementing http basic authentication.
+ *
+ * @constructs Basic
+ * @param {Function} identify - A function performing the password lookup.
+ */
 var Basic = function (identify) {
   Authenticator.call(this, identify);
 };
@@ -41,6 +47,11 @@ Basic.prototype.header = function (realm) {
   return 'Basic realm="' + realm + '"';
 };
 
+/**
+ * Request an authentication strategy for the passport module.
+ *
+ * @returns {passport.Strategy} A passport strategy for basic authentication.
+ */
 Basic.prototype.passport = function () {
   this.name = 'basic';
 
